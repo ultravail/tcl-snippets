@@ -58,13 +58,15 @@ proc function {name arguments script} {
       }}] {expr { $x eq {} ? [continue] : $x }} ]
 
       foreach arg $arguments {
-         append code "set [lindex $var 1] {[lindex $var 2]}\n"
+         append code "set [lindex $arg 1] {[lindex $arg 2]}\n"
+         #append code "puts \"DEBUG argument [lindex $arg 1], default: {[lindex $arg 2]}\"\n"
       }
       set parameters [keyvalue_list_to_array [strip_from_list 0 $arguments]]
       set param_names [lsort [get_nth_from_list 1 $arguments]]
 
       append code [string map [list SCRIPT $script PROCNAME $name PARAM_NAMES $param_names REQUIRED $required PARAMS $parameters] {
          array set defaults [list PARAMS]
+         #puts "\[DEBUG\] calling PROCNAME with args: $args"
          foreach {var val} $args {
             set varname [string trim $var -]
             set found($varname) 1
